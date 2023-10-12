@@ -13,6 +13,7 @@ const Expenses = (props) => {
           name={item.name}
           price={item.price}
           date={item.date}
+          phone={item.phone}
         />
       ))}
     </Card>

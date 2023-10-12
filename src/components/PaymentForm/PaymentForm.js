@@ -7,7 +7,8 @@ const PaymentForm = (props) => {
     id: 0,
     name: '',
     price: 0,
-    date: new Date().toISOString().split('T')[0]
+    date: new Date().toISOString().split('T')[0],
+    phone: ''
   })
 
   const [isSubmit, setIsSubmit] = useState(true)
@@ -29,7 +30,8 @@ const PaymentForm = (props) => {
       id: Math.random(),
       name: objectState.name,
       price: objectState.price,
-      date: objectState.date
+      date: objectState.date,
+      phone: objectState.phone
     })
 
     setIsSubmit(false)
@@ -75,6 +77,17 @@ const PaymentForm = (props) => {
                   : new Date().toISOString().split('T')[0]
               }
               name="date"
+            />
+          </div>
+          <div className="new-payment__control">
+            <label>전화번호</label>
+            <input
+              type="tel"
+              onChange={inputHandler}
+              value={isSubmit ? objectState.phone : ''}
+              name="phone"
+              placeholder="00*-000*-0000"
+              pattern="[0-9]{2,3}-[0-9]{3,4}-[0-9]{3,4}"
             />
           </div>
         </div>

@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React from 'react'
 
 import ExpenseDate from './ExpenseDate'
 import Card from '../UI/Card'
@@ -10,6 +10,7 @@ const ExpenseItem = (props) => {
       <ExpenseDate date={props.date} />
       <div className="expense-item__description">
         <h2>{props.name}</h2>
+        <div className="expense-item__price">{props.phone}</div>
         <div className="expense-item__price">${props.price}</div>
       </div>
     </Card>
