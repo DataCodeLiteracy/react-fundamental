@@ -4,9 +4,10 @@ import './PaymentForm.css'
 
 const PaymentForm = (props) => {
   const [objectState, setObjectState] = useState({
+    id: 0,
     name: '',
     price: 0,
-    today: new Date().toISOString().split('T')[0]
+    date: new Date().toISOString().split('T')[0]
   })
 
   const inputHandler = (e) => {
@@ -19,10 +20,13 @@ const PaymentForm = (props) => {
 
     props.getPaymentFormData(objectState)
 
+    console.log(typeof objectState.date)
+
     setObjectState({
+      id: Math.random(),
       name: objectState.name,
       price: objectState.price,
-      today: objectState.today
+      date: objectState.date
     })
   }
 
@@ -57,8 +61,8 @@ const PaymentForm = (props) => {
               min="2019-01-01"
               max="2023-12-31"
               onChange={inputHandler}
-              value={objectState.today}
-              name="today"
+              value={objectState.date}
+              name="date"
             />
           </div>
         </div>
