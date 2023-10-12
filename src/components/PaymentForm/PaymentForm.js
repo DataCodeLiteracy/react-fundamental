@@ -1,86 +1,102 @@
-import React, { useState } from "react";
+import React, { useRef, useState } from 'react'
 
-import "./PaymentForm.css";
+import './PaymentForm.css'
 
-const PaymentForm = () => {
-	const [objectState, setObjectState] = useState({
-		name: "",
-		price: 0,
-		today: new Date(),
-	});
+const PaymentForm = (props) => {
+  const [objectState, setObjectState] = useState({
+    id: 0,
+    name: '',
+    price: 0,
+    date: new Date().toISOString().split('T')[0],
+    phone: ''
+  })
 
-	const inputTextHandler = (event) => {
-		setObjectState((prevState) => ({
-			...prevState,
-			name: event.target.value,
-		}));
-	};
+  const [isSubmit, setIsSubmit] = useState(true)
 
-	const inputPriceHandler = (event) => {
-		setObjectState((prevState) => ({
-			...prevState,
-			price: event.target.value,
-		}));
-	};
+  const nameRef = useRef(null)
 
-	const inputTodayHandler = (event) => {
-		setObjectState((prevState) => ({
-			...prevState,
-			today: event.target.value,
-		}));
-	};
+  const inputHandler = (e) => {
+    const { name, value } = e.target
+    setIsSubmit(true)
+    setObjectState((prevState) => ({ ...prevState, [name]: value }))
+  }
 
-	const buttonSubmitHander = (event) => {
-		event.preventDefault();
+  const buttonSubmitHandler = (event) => {
+    event.preventDefault()
 
-		console.log(objectState);
+    props.getPaymentFormData(objectState)
 
-		setObjectState({
-			name: "",
-			price: 0,
-			today: new Date(),
-		});
-	};
+    setObjectState({
+      id: Math.random(),
+      name: objectState.name,
+      price: objectState.price,
+      date: objectState.date,
+      phone: objectState.phone
+    })
 
-	return (
-		<div className="new-payment">
-			<form onSubmit={buttonSubmitHander}>
-				<div className="new-payment__controls">
-					<div className="new-payment__control">
-						<label>이름</label>
-						<input
-							type="text"
-							onChange={inputTextHandler}
-							value={objectState.name}
-						/>
-					</div>
-					<div className="new-payment__control">
-						<label>금액</label>
-						<input
-							type="number"
-							min="0.01"
-							step="0.01"
-							onChange={inputPriceHandler}
-							value={objectState.price}
-						/>
-					</div>
-					<div className="new-payment__control">
-						<label>날짜</label>
-						<input
-							type="date"
-							min="2019-01-01"
-							max="2023-12-31"
-							onChange={inputTodayHandler}
-							value={objectState.today}
-						/>
-					</div>
-				</div>
-				<div className="new-payment__actions">
-					<button type="submit">결제 추가</button>
-				</div>
-			</form>
-		</div>
-	);
-};
+    setIsSubmit(false)
 
-export default PaymentForm;
+    nameRef.current.focus()
+  }
+
+  return (
+    <div className="new-payment">
+      <form onSubmit={buttonSubmitHandler}>
+        <div className="new-payment__controls">
+          <div className="new-payment__control">
+            <label>이름</label>
+            <input
+              type="text"
+              onChange={inputHandler}
+              value={isSubmit ? objectState.name : ''}
+              name="name"
+              ref={nameRef}
+            />
+          </div>
+          <div className="new-payment__control">
+            <label>금액</label>
+            <input
+              type="number"
+              min="0.01"
+              step="0.01"
+              onChange={inputHandler}
+              value={isSubmit ? objectState.price : 0}
+              name="price"
+            />
+          </div>
+          <div className="new-payment__control">
+            <label>날짜</label>
+            <input
+              type="date"
+              min="2019-01-01"
+              max="2023-12-31"
+              onChange={inputHandler}
+              value={
+                isSubmit
+                  ? objectState.date
+                  : new Date().toISOString().split('T')[0]
+              }
+              name="date"
+            />
+          </div>
+          <div className="new-payment__control">
+            <label>전화번호</label>
+            <input
+              type="tel"
+              onChange={inputHandler}
+              value={isSubmit ? objectState.phone : ''}
+              name="phone"
+              placeholder="00*-000*-0000"
+              pattern="[0-9]{2,3}-[0-9]{3,4}-[0-9]{3,4}"
+            />
+          </div>
+        </div>
+        <div className="new-payment__actions">
+          <button type="submit">결제 추가</button>
+        </div>
+      </form>
+    </div>
+  )
+}
+
+export default PaymentForm
