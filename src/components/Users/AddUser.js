@@ -1,47 +1,48 @@
-import React, { useState } from 'react';
+import React, { useState } from 'react'
+import { createPortal } from 'react-dom'
 
-import Card from '../UI/Card';
-import Button from '../UI/Button';
-import ErrorModal from '../UI/ErrorModal';
-import classes from './AddUser.module.css';
+import Card from '../UI/Card'
+import Button from '../UI/Button'
+import ErrorModal from '../UI/ErrorModal'
+import classes from './AddUser.module.css'
 
 const AddUser = (props) => {
-  const [enteredUsername, setEnteredUsername] = useState('');
-  const [enteredAge, setEnteredAge] = useState('');
-  const [error, setError] = useState();
+  const [enteredUsername, setEnteredUsername] = useState('')
+  const [enteredAge, setEnteredAge] = useState('')
+  const [error, setError] = useState()
 
   const addUserHandler = (event) => {
-    event.preventDefault();
+    event.preventDefault()
     if (enteredUsername.trim().length === 0 || enteredAge.trim().length === 0) {
       setError({
         title: '유효하지 않은 입력값',
-        message: '유효한 나이와 이름을 입력하세요 (비어 있지 않은 값).',
-      });
-      return;
+        message: '유효한 나이와 이름을 입력하세요 (비어 있지 않은 값).'
+      })
+      return
     }
     if (+enteredAge < 1) {
       setError({
         title: '유효하지 않은 나이',
-        message: '유효한 나이 값을 입력하세요 (> 0).',
-      });
-      return;
+        message: '유효한 나이 값을 입력하세요 (> 0).'
+      })
+      return
     }
-    props.onAddUser(enteredUsername, enteredAge);
-    setEnteredUsername('');
-    setEnteredAge('');
-  };
+    props.onAddUser(enteredUsername, enteredAge)
+    setEnteredUsername('')
+    setEnteredAge('')
+  }
 
   const usernameChangeHandler = (event) => {
-    setEnteredUsername(event.target.value);
-  };
+    setEnteredUsername(event.target.value)
+  }
 
   const ageChangeHandler = (event) => {
-    setEnteredAge(event.target.value);
-  };
+    setEnteredAge(event.target.value)
+  }
 
   const errorHandler = () => {
-    setError(null);
-  };
+    setError(null)
+  }
 
   return (
     <div>
@@ -52,6 +53,16 @@ const AddUser = (props) => {
           onConfirm={errorHandler}
         />
       )}
+      {/* {error &&
+        createPortal(
+          <ErrorModal
+            title={error ? error.title : ''} // error가 존재하면 title을 사용, 아니면 빈 문자열
+            message={error ? error.message : ''}
+            onConfirm={errorHandler}
+          />,
+          document.getElementById('error-modal-root')
+        )} */}
+
       <Card className={classes.input}>
         <form onSubmit={addUserHandler}>
           <label htmlFor="username">사용자명</label>
@@ -72,7 +83,7 @@ const AddUser = (props) => {
         </form>
       </Card>
     </div>
-  );
-};
+  )
+}
 
-export default AddUser;
+export default AddUser
