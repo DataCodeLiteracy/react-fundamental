@@ -5,11 +5,13 @@ import Card from '../UI/Card'
 import Button from '../UI/Button'
 import ErrorModal from '../UI/ErrorModal'
 import classes from './AddUser.module.css'
+import { useRef } from 'react'
 
 const AddUser = (props) => {
   const [enteredUsername, setEnteredUsername] = useState('')
   const [enteredAge, setEnteredAge] = useState('')
   const [error, setError] = useState()
+  const nameRef = useRef(null)
 
   const addUserHandler = (event) => {
     event.preventDefault()
@@ -30,6 +32,8 @@ const AddUser = (props) => {
     props.onAddUser(enteredUsername, enteredAge)
     setEnteredUsername('')
     setEnteredAge('')
+
+    nameRef.current.focus()
   }
 
   const usernameChangeHandler = (event) => {
@@ -71,6 +75,7 @@ const AddUser = (props) => {
             type="text"
             value={enteredUsername}
             onChange={usernameChangeHandler}
+            ref={nameRef}
           />
           <label htmlFor="age">나이</label>
           <input
